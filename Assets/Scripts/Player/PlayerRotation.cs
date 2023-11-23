@@ -1,0 +1,19 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PlayerRotation : MonoBehaviour
+{
+    void Update()
+    {
+        Vector3 mousePosition = Input.mousePosition;
+        mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        Vector2 direction = new Vector2(mousePosition.x - transform.position.x, mousePosition.y - transform.position.y);
+        transform.up = direction;
+
+        if (mousePosition.x > transform.position.x)
+            this.transform.parent.localScale = new Vector3(1f, 1f, 1f);
+        else
+            this.transform.parent.localScale = new Vector3(-1f, 1f, 1f);
+    }
+}
