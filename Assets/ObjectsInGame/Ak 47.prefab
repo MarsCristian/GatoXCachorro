@@ -82,7 +82,7 @@ MonoBehaviour:
   bullet: {fileID: 631313738734769892, guid: a3bcbc6b21f4532d78ff18fe7314fdaf, type: 3}
   bulletEnemy: {fileID: 631313738734769892, guid: a85291c1337c8c371be28418b0f1eaa7, type: 3}
   weaponThrow: {fileID: 4567014535001815352, guid: 2e74655aa38dfb6f18e2567e7ca14962, type: 3}
-  fireRate: 0.1
+  fireRate: 0.15
   ammo: 30
   maxAmmo: 30
   alertIsTrue: {fileID: 0}
@@ -92,6 +92,10 @@ MonoBehaviour:
     m_Bits: 72
   vision: {fileID: 0}
   visionRange: 15
+  gunshot: {fileID: 11400000, guid: e4257b01022d3dc40afb03f5b50031d0, type: 2}
+  emptyGun: {fileID: 11400000, guid: 04031abdf1742b54497f84da31840dc6, type: 2}
+  gunLoad: {fileID: 11400000, guid: 93872ff692294304d89d3ae7e1ece959, type: 2}
+  combatStarted: {fileID: 11400000, guid: 8952a759e63cff44c8e744aa4e3eed1d, type: 2}
 --- !u!58 &-2950949735595530112
 CircleCollider2D:
   m_ObjectHideFlags: 0

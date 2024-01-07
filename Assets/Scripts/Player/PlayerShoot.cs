@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
+using Cinemachine;
 
 public class PlayerShoot : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class PlayerShoot : MonoBehaviour
     private Transform weaponChild;
     private Transform parentChange;
 
-    public float fireRate = 5;
+    public float fireRate = 200;
     private float fireTimer = 0f;
     public int ammo = 0;
     public int maxAmmo = 30;
@@ -28,6 +29,13 @@ public class PlayerShoot : MonoBehaviour
     public EnemySeesPlayer vision;
     public float visionRange = 15f;
 
+    private bool gun_loaded = false;
+    private bool gun_empty_notified = false;
+
+    public GameEvent gunshot;
+    public GameEvent emptyGun;
+    public GameEvent gunLoad;
+
     void Start(){
         ammo = maxAmmo;
         weaponChild = this.gameObject.transform.GetChild(0);
@@ -40,15 +48,46 @@ public class PlayerShoot : MonoBehaviour
             father = this.transform.parent.gameObject;
             GetComponent<CircleCollider2D>().enabled = false;
             if (father.transform.name == "PlayerWeapon"){
-                if (Input.GetMouseButton(0) && fireTimer <= 0f && ammo > 0)
+                if (!gun_loaded)
                 {
-                    if (!alertIsTrue.alert)
-                        alertIsTrue.alert = true;
-                    ammo--;
-                    Instantiate(bullet, weaponChild.position, father.transform.rotation);
-                    fireTimer = fireRate;
+                    // Raise gunload event
+                    gunLoad.Raise();
+                    gun_loaded = true;
                 }
-                else if (Input.GetKeyDown(KeyCode.Q)){
+
+                if (Input.GetMouseButton(0))
+                {
+                    if (fireTimer <= 0f)
+                    {
+                        if (ammo > 0)
+                        {
+                            if (!alertIsTrue.alert)
+                            {
+                                alertIsTrue.alert = true;
+                            }
+                                
+                            ammo--;
+                            Instantiate(bullet, weaponChild.position, father.transform.rotation);
+                            // Raise gunshot event
+                            gunshot.Raise();
+                        }
+                        else if (!gun_empty_notified)
+                        {
+                            // Barulho da arma vazia
+                            gun_empty_notified = true;
+                            // Raise empty gun event
+                            emptyGun.Raise();
+
+                        }
+                        fireTimer = fireRate;
+                    } else
+                    {
+                        fireTimer -= Time.deltaTime;
+                    }
+                }
+                else if (Input.GetKeyDown(KeyCode.Q))
+                {
+                    gun_loaded = false;
                     this.transform.parent = null;
                     Instantiate(weaponThrow, this.transform.position, father.transform.rotation);
                     counterFix = GameObject.Find("PlayerWeapon").GetComponent<WeaponManager>();
@@ -58,11 +97,16 @@ public class PlayerShoot : MonoBehaviour
                     parentChange.name = newName;
                     this.transform.parent = parentChange;
                 }
-                else if (Input.GetKeyDown(KeyCode.E)){
+                else if (Input.GetKeyDown(KeyCode.E))
+                {
+                    gun_loaded = false;
                     Destroy(gameObject);
                 }
                 else
+                {
                     fireTimer -= Time.deltaTime;
+                    gun_empty_notified = false;
+                }
             }
             else if(father.transform.name == "EnemyWeapon"){
                 vision = father.GetComponentInChildren<EnemySeesPlayer>();
@@ -72,6 +116,8 @@ public class PlayerShoot : MonoBehaviour
                     grandfather.GetComponent<AIPath>().canMove = false;
                     ammo--;
                     Instantiate(bulletEnemy, weaponChild.position, father.transform.rotation);
+                    // Raise gunshot event
+                    gunshot.Raise();
                     fireTimer = fireRate;
                 }
                 else if(alertIsTrue.alert && !(hit.transform.tag == "Player") && fireTimer <= 0f && ammo > 0){

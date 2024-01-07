@@ -10,6 +10,8 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
 
     public bool alert;
+    private bool alertRaised;
+    public GameEvent combatStarted;
 
     void Awake()
     {
@@ -18,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Start(){
         alert = false;
+        alertRaised = false;
     }
 
     void Update()
@@ -28,6 +31,17 @@ public class PlayerMovement : MonoBehaviour
             normalMove = 0.7071067812f;
         else
             normalMove = 1f;
+
+        if(alert && !alertRaised)
+        {
+            alertRaised = true;
+            combatStarted.Raise();
+        }
+        if(!alert &&  alertRaised)
+        {
+            alertRaised = false;
+            combatStarted.Raise();
+        }
     }
 
     void FixedUpdate()
