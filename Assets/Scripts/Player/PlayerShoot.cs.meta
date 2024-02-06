@@ -3,7 +3,15 @@ guid: 8b8822772688900c5a98f8ef19f73de3
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - bullet: {instanceID: 0}
+  - bulletEnemy: {instanceID: 0}
+  - weaponThrow: {instanceID: 0}
+  - alertIsTrue: {instanceID: 0}
+  - aiPath: {instanceID: 0}
+  - vision: {instanceID: 0}
+  - gun_load_source: {instanceID: 0}
+  - gun_load_sound: {fileID: 8300000, guid: dbd7d1179d6f87947a22e99c7b173208, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

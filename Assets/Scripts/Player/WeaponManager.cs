@@ -26,7 +26,7 @@ public class WeaponManager : MonoBehaviour
                 weaponTransform = col[0].gameObject.transform;
                 weaponTransform.parent = this.transform;
                 weaponTransform.localPosition = Vector3.zero;
-                weaponTransform.localRotation = Quaternion.Euler(0, 0, 90);
+                weaponTransform.localRotation = Quaternion.Euler(0, 0, 180);
                 weaponTransform.localScale = new Vector3(1f, 1f, 1f);
             }
         }

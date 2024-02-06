@@ -9,15 +9,29 @@ public class PlayerPunch : MonoBehaviour
 
     public LayerMask enemies;
     public float attackRange;
+    public GameEvent knifeHit;
+    public GameEvent knifeSwish;
 
     void Update()
     {
         if(GetComponent<WeaponManager>().maxAmmoMan == 0 && Input.GetMouseButton(0) && punchTimer <= 0f){
+            bool hit_enemy = false;
             Collider2D[] col = Physics2D.OverlapCircleAll(this.gameObject.transform.GetChild(0).position, attackRange, enemies);
             for (int i = 0; i < col.Length; i++){
                 col[0].gameObject.TryGetComponent<HealthSystem>(out HealthSystem enemyComponent);
-                if(enemyComponent != null)
+                if (enemyComponent != null)
+                {
                     enemyComponent.TakeDamage(5);
+                    hit_enemy = true;
+                }
+            }
+            // Sounds
+            if (hit_enemy)
+            {
+                knifeHit.Raise();
+            } else
+            {
+                knifeSwish.Raise();
             }
 
             punchTimer = punchDelay;

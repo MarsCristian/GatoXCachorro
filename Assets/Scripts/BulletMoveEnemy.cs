@@ -7,18 +7,36 @@ public class BulletMoveEnemy : MonoBehaviour
     public float bulletSpeed;
     public LayerMask walls;
 
+    public AudioClip audioBody;
+    public AudioClip audioWall;
+    public AudioSource audioSource;
+
+    private bool already_hit = false;
+
     void Update()
     {
         transform.Translate(Vector2.up * Time.deltaTime * bulletSpeed);
 
         Destroy(gameObject, 3f);
 
-        Collider2D[] col = Physics2D.OverlapCircleAll(this.gameObject.transform.position, this.GetComponent<CircleCollider2D>().radius, walls);
-        if (col.Length > 0){
-            Destroy(gameObject);
-            col[0].gameObject.TryGetComponent<HealthSystem>(out HealthSystem playerComponent);
-            if (playerComponent != null)
-                playerComponent.TakeDamage(1);
+        if (!already_hit) {
+            Collider2D[] col = Physics2D.OverlapCircleAll(this.gameObject.transform.position, this.GetComponent<CircleCollider2D>().radius, walls);
+            if (col.Length > 0) {
+                bulletSpeed = 0f;
+                gameObject.GetComponent<SpriteRenderer>().enabled = false;
+                col[0].gameObject.TryGetComponent<HealthSystem>(out HealthSystem playerComponent);
+                if (playerComponent != null)
+                {
+                    playerComponent.TakeDamage(1);
+                    audioSource.PlayOneShot(audioBody);
+                }
+                else
+                {
+                    audioSource.PlayOneShot(audioWall);
+                }
+                Destroy(gameObject, 2f);
+                already_hit = true;
+            }
         }
     }
 

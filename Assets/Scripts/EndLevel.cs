@@ -17,8 +17,11 @@ public class EndLevel : MonoBehaviour
     {
         if(startingEnemies > this.transform.childCount){
             alert.alert = true;
-            if(this.transform.childCount == 0)
+            if (this.transform.childCount == 0)
+            {
                 exit.SetActive(true);
+                alert.alert = false;
+            }
         }
     }
 }
