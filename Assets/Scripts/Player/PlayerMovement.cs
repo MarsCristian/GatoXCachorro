@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,13 @@ public class PlayerMovement : MonoBehaviour
     public bool alert;
     private bool alertRaised;
     public GameEvent combatStarted;
+
+    public float footstepFrequency = 1f;
+    public float timeBetweenFootsteps = 1f;
+    private float lastFootstep = 0f;
+
+    public AudioClip audioFootstep;
+    public AudioSource audioSource;
 
     void Awake()
     {
@@ -41,6 +49,13 @@ public class PlayerMovement : MonoBehaviour
         {
             alertRaised = false;
             combatStarted.Raise();
+        }
+
+        lastFootstep -= Time.deltaTime * footstepFrequency * rb.velocity.magnitude;
+        if (lastFootstep < 0)
+        {
+            audioSource.PlayOneShot(audioFootstep);
+            lastFootstep = timeBetweenFootsteps;
         }
     }
 

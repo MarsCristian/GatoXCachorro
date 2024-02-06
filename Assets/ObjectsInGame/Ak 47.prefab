@@ -95,7 +95,6 @@ MonoBehaviour:
   gunshot: {fileID: 11400000, guid: e4257b01022d3dc40afb03f5b50031d0, type: 2}
   emptyGun: {fileID: 11400000, guid: 04031abdf1742b54497f84da31840dc6, type: 2}
   gunLoad: {fileID: 11400000, guid: 93872ff692294304d89d3ae7e1ece959, type: 2}
-  combatStarted: {fileID: 11400000, guid: 8952a759e63cff44c8e744aa4e3eed1d, type: 2}
 --- !u!58 &-2950949735595530112
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -205,7 +204,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 10
   m_Sprite: {fileID: 21300000, guid: 803c7d2bb7a93814785120c8f739eb0f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
